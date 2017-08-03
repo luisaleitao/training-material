@@ -112,6 +112,26 @@ material:
     - "Second take home message"
     - "Third take home message"
 -
+    title: "Introduction to NGS Data Analysis"
+    type: "tutorial"
+    name: "intro-NGS-analysis"
+    zenodo_link: ""
+    galaxy_tour: ""
+    hands_on: "yes"
+    slides: "no"
+    questions:
+    - "What is a fastq file?"
+    - "How do I analyse and improve the quality of the dataset provided by an HTS machine?"
+    - "How do I correctly map the reads?"
+    - "How do i visualize and interpret the results?"
+    objectives:
+    - "Learn what is a fastq, a BAM and a SAM files."
+    - "Analyse the quality of a fastq file, using the tool FastQC."
+    - "Learn how to improve the quality of your data."
+    - "Learn how to properly map reads."
+    - "Learn how to visualize the results using IGV"
+    time_estimation: "1-1.5h"
+-
     title: "Visualization"
     type: "tutorial"
     name: "galaxy-intro-vis"
