@@ -18,7 +18,7 @@ In this tutorial you will learn the basics on how to work and analyse next-gener
 >
 {: .agenda}
 
-# Fast manipulation 
+# Fastq manipulation 
 {:.no_toc}
 
 Most high-throughput sequencing machines output fastq files, the “de facto” current standard in HTS.
@@ -73,7 +73,7 @@ High Throughput Sequencing machines read thousands or millions of sequences in p
 
 >>    > ### :bulb: Tip: Upload data to Galaxy
 >>    >
->>    > * Click on the upload button in the upper left ot the interface.
+>>    > * Click on the upload button in the upper left of the interface.
 
 >>    >  ![](https://galaxyproject.github.io/training-material//topics/introduction/images/upload_button.png "source: https://galaxyproject.github.io/training-material//topics/introduction/tutorials/galaxy-intro-peaks2genes/tutorial.html")
 >>    > * Press __Choose local file__ and search for your file.
@@ -156,7 +156,7 @@ To store millions of alignments, researchers also had to develop new, more pract
 >
 > 1. **BWA-MEM**:wrench:: Search in the tool bar on the left the mapper ‘BWA-MEM’. 
 > 2. Select **BWA-MEM** and use the uploaded dataset (First Dataset) as the fastqsanger file
-> 3. Choose as reference genome the E.coli NC_000913.3_MG1655.fasta.[3](https://www.ncbi.nlm.nih.gov/nuccore/556503834)
+> 3. Choose as reference genome the E.coli NC_000913.3_MG1655.fasta.([3](https://www.ncbi.nlm.nih.gov/nuccore/556503834))
 >    **NOTE**: You may need to upload the file to your history. Please do it as already explained above.
 {: .hands_on}
 
@@ -166,7 +166,7 @@ To store millions of alignments, researchers also had to develop new, more pract
 has 11 mandatory fields.
 
 > ![](https://galaxyproject.github.io/training-material//topics/usegalaxy/images/bam_structure.png) 
-> To understand more about the information present in SAM files look briefly at https://samtools.github.io/hts-specs/SAMv1.pdf 
+> To understand more about the information present in SAM files look briefly in [here](https://samtools.github.io/hts-specs/SAMv1.pdf) 
 > {: .comment}
 
 > ### :pencil2: Hands-on: Alignment to a reference genome
@@ -182,7 +182,7 @@ has 11 mandatory fields.
 >    >    <summary>Click to view answers</summary>
 >    >    <ol type="1">
 >    >    <li> 
->    >    The same way as FastQC generates reports of fastq files to assess quality of raw data, there are programs that generate global reports on the quality of alignments. One popular tool for this is [qualimap](http://qualimap.bioinfo.cipf.es/).
+>    >    The same way as FastQC generates reports of fastq files to assess quality of raw data, there are programs that generate global reports on the quality of alignments.   
 >    >
 >    >    The way you check if the alignment step went well depends on your application. Usually, duplication levels higher than 20% are not a good sign (they're a sign of low input DNA and PCR artifacts) but again, depends on what you are sequencing and how much. Similarly, in the case of bacterial sequencing or targeted (eg. exonic) sequencing you expect >95% successful alignment, but if sequencing a full mamallian genome (with many duplicated areas) it may be normal to have as low as 70-80% alignment success. If you have to check the expected “quality” for your application. </li>
 >    >    </ol>
@@ -198,11 +198,11 @@ After finishing your analysis, even if you did all the quality checks, and obtai
 
 > ### :pencil2: Hands-on: Visualizing with the IGV browser
 >
-> 1. **IGV**:wrench::To display the result in IGV open the IGV browser local on your computer. 
+> 1. **IGV**:wrench::To display the result in IGV open the IGV browser locally on your computer. 
 > 2. **IGV**:wrench::Open genome file ``NC_000913.3_MG1655.fasta``
 > 2. **Galaxy**:wrench:: Click on the BWA-MEM item on the history panel .
 > 3. **Galaxy**:wrench:: Choose in the history on the BWA-MEM results and click on ‘local’ at ‘display with IGV’.
-> 4. **IGV**:wrench:: The BAM file should be opened in the IGV browser and the genome should be loaded automatically.
+> 4. **IGV**:wrench:: The BAM file should be opened in the IGV browser.
 > 5. **IGV**:wrench:: Look at the following regions:
 >> - NC_000913.3:3846244-3846290 
 >> - NC_000913.3:1-1000 and NC_000913.3:4640500-4641652 
@@ -218,11 +218,12 @@ After finishing your analysis, even if you did all the quality checks, and obtai
 >    >    <details>
 >    >    <summary>Click to view answers</summary>
 >    >    <ol type="1">
->    >    <li> 1. You can see that this region has an SNP (a C instead of an A in the genome).
+>    >    <li> 
+>    >    1.You can see that this region has an SNP (a C instead of an A in the genome).
 >    >
->    >         2. The coloured reads that you see in this case represent reads in which the insert size is larger then expected. You can see it at the beggining and at the ending of the chromossome. This happens because the chromossome of the E.coli is circular, therefore when sequencing from both ends of the fragment of DNA, the pair that corresponds to the the one in the beggining of the genome is at the end.
+>    >    2.The coloured reads that you see in this case represent reads in which the insert size is larger than expected. You can see it at the beggining and at the ending of the chromossome. This happens due to the chromossome of the E.coli being circular, therefore when sequencing from both ends of the fragment of DNA, the pair that corresponds to the the one in the beggining of the genome is at the end.
 >    >
->    >         3. The reads are white because they have a mapping quality equal to zero. In this case, the read also maps to another location with equally good placement. When you view them as pairs, the program can gather information from a read that that is sure in their location and that happens yo be the pair for a white read. So, when viewing as pairs IGV uses that information and can be sure now that the white read belongs there or vice versa. </li>
+>    >    3.The reads are white because they have a mapping quality equal to zero. In this case, the read also maps to another location with equally good placement. When you view them as pairs, the program can gather information from a read that is sure in their location and that happens to be the pair for a white read. So, when viewing as pairs IGV uses that information and can be sure now that the white read belongs there or the opposite.</li>
 >    >    </ol>
 >    >    </details>
 >    {: .question}
