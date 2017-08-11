@@ -87,7 +87,7 @@ You should ensure that your mapping file is formatted correctly. This script wil
 The next task is to assign the multiplexed reads to samples based on their nucleotide barcode (this is known as demultiplexing). This step also performs quality filtering based on the characteristics of each sequence, removing any low quality or ambiguous reads. To perform these steps we’ll use split_libraries.py
 This will create three files in the new directory split_library_output/:
 
-    split_library_log.txt : This file contains the summary of demultiplexing and quality filtering, including the number of reads detected for each sample and a brief summary of any reads that were removed due to quality considerations.
+   split_library_log.txt : This file contains the summary of demultiplexing and quality filtering, including the number of reads detected for each sample and a brief summary of any reads that were removed due to quality considerations.
     histograms.txt : This tab-delimited file shows the number of reads at regular size intervals before and after splitting the library.
     seqs.fna : This is a fasta formatted file where each sequence is renamed according to the sample it came from. The header line also contains the name of the read in the input fasta file and information on any barcode errors that were corrected.
 enerates sequences that begin at the BarcodeSequence, which is followed by the LinkerPrimerSequence, both of which are automatically removed during the demultiplexing step described below. The ReversePrimer (i.e., the primer at the end of the read) is not removed by default but can be using the -z option to split_libraries.py.
