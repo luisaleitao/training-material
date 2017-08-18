@@ -246,9 +246,9 @@ As you learnt in [Galaxy 101 tutorial](https://galaxyproject.github.io/training-
 >
 >The center pane will change as shown below and you will be able to choose which steps to include/exclude and how to name the newly created workflow.
 >![](https://github.com/luisaleitao/training-material/blob/master/topics/introduction/images/Screenshot%20from%202017-08-17%2017-38-53.png?raw=true)
-> 3. **Uncheck **any steps that shouldn’t be included in the workflow (if any), and **rename** the workflow to ``NGS Analysis``.
-> 4. Click on the **Create Workflow** button near the top.
-You will get a message that the workflow was created. But where did it go?
+>
+> 3. **Uncheck** any steps that shouldn’t be included in the workflow (if any), and **rename** the workflow to ``NGS Analysis``.
+> 4. Click on the **Create Workflow** button near the top. You will get a message that the workflow was created. But where did it go?
 > 5. Click on **Workflow** in the top menu of Galaxy. Here you have a list of all your workflows. Your newly created workflow should be listed at the top:
 {: .hands_on}
 ## The workflow editor
@@ -259,7 +259,7 @@ We can examine the workflow in Galaxy’s workflow editor. Here you can view/cha
 >
 > 1. Click on the triangle to the right of your workflow name.
 >
-![](https://github.com/luisaleitao/training-material/blob/master/topics/introduction/images/workflow_edit.png?raw=true)
+>![](https://github.com/luisaleitao/training-material/blob/master/topics/introduction/images/workflow_edit.png?raw=true)
 >
 > 2. Select **Edit** to launch the workflow editor. You should see something like this:
 >![](https://github.com/luisaleitao/training-material/blob/master/topics/introduction/images/example_workflow.png?raw=true)
