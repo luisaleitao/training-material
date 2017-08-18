@@ -94,13 +94,20 @@ As you may have noticed in the FastQC report you've just seen, the quality of th
 > ### :pencil2: Hands-on: Quality treatment
 >
 > 1. **Trim Galore!**:wrench::Run Trim Galore on the previously imported data file.
->> a) Is the library paired-end or single-end?: **Single end**
->> b) Reads in FASTQ format: **First Dataset (See the tip below, as you will need to change the type of the data).**
->> c) Adapter sequence to be trimmed: **Automatic detection**, unless you know which adapter sequences were used
->> d) Trim Galore! advanced settings: **Full parameter list**
+>> a) Is the library paired-end or single-end?: **Single end** 
+>
+>> b) Reads in FASTQ format: **First Dataset (See the tip below, as you will need to change the type of the data).** 
+>
+>> c) Adapter sequence to be trimmed: **Automatic detection**, unless you know which adapter sequences were used 
+>
+>> d) Trim Galore! advanced settings: **Full parameter list** 
+>
 >> e) Trim low-quality ends from reads: **30**
+>
 >> f) Overlap with adapter sequence required to trim a sequence: **5.** The default value "1" can be too stringent.
+>
 >> g) Discard reads that became shorter than length N: **20**
+>
 >> h) Leave the rest of the settings on default
 >
 >>    > ### :bulb: Tip: Changing the file type `fastq` to `fastqsanger` of data in your history
@@ -144,11 +151,17 @@ To store millions of alignments, researchers also had to develop new, more pract
 > 1. **BWA-MEM**:wrench:: Search in the tool bar on the left the mapper ‘BWA-MEM’. 
 >> Settings:
 >> a) Will you select a reference genome from your history or use a built-in index?: **Use a genome from history**
+>
 >> b) Choose as reference genome the ``E.coli NC_000913.3_MG1655.fasta.``[3](https://www.ncbi.nlm.nih.gov/nuccore/556503834)
+>
 >> You may need to upload the file to your history. Please do it as already explained above.
+>
 >> c) Single or Paired-end reads: **Single**
+>
 >> d) Select fastq dataset: **First Dataset**
+>
 >> e) Set read groups information?: **Automatically assign ID**
+>
 >> f) Leave the rest of the settings on default
 
 > ### :nut_and_bolt: Comment: Learning about SAM files 
@@ -198,8 +211,8 @@ After finishing your analysis, even if you did all the quality checks, and obtai
 >> - NC_000913.3:1-1000 and NC_000913.3:4640500-4641652 
 >> - NC_000913.3:3759212-3768438 
 
-> ### :nut_and_bolt: Comment: 
-Most genomes (particularly mamallian genomes) contain areas of low complexity, composed mostly of repetitive sequences. In the case of short reads, sometimes these align to multiple regions in the genome equally well, making it impossible to know where the fragment came from. Longer reads are needed to overcome these difficulties, or in the absence of these, paired-end data can also be used. **Paired end reads occur when a fragment of DNA is sequenced from two ends and therefore produces two reads.** Some aligners (such as bwa) can use information on paired reads to help disambiguate some alignments. Information on paired reads is also added to the SAM file when proper aligners are used. 
+>> ### :nut_and_bolt: Comment: 
+>>Most genomes (particularly mamallian genomes) contain areas of low complexity, composed mostly of repetitive sequences. In the >>case of short reads, sometimes these align to multiple regions in the genome equally well, making it impossible to know where >>the fragment came from. Longer reads are needed to overcome these difficulties, or in the absence of these, paired-end data can >>also be used. **Paired end reads occur when a fragment of DNA is sequenced from two ends and therefore produces two reads.** >>Some aligners (such as bwa) can use information on paired reads to help disambiguate some alignments. Information on paired >>reads is also added to the SAM file when proper aligners are used. 
 > {: .comment}
 >
 > ### :question: Questions
@@ -230,9 +243,9 @@ As you learnt in [Galaxy 101 tutorial](https://galaxyproject.github.io/training-
 > 1. **Clean up** your history. If you had any failed jobs (red), please remove those datasets from your history by clicking on the `x` button. This will make the creation of a workflow easier.
 > 2. Go to the history **Options menu** (gear symbol) and select the ``Extract Workflow`` option.
 ![](https://github.com/luisaleitao/training-material/blob/master/topics/introduction/images/history_menu_extract_workflow.png?raw=true)
->The center pane will change as shown below and you will be able to choose which steps to include/exclude and how to name the newly created workflow.
-![](https://github.com/luisaleitao/training-material/blob/master/topics/introduction/images/Screenshot%20from%202017-08-17%2017-38-53.png?raw=true)
 >
+>The center pane will change as shown below and you will be able to choose which steps to include/exclude and how to name the newly created workflow.
+>![](https://github.com/luisaleitao/training-material/blob/master/topics/introduction/images/Screenshot%20from%202017-08-17%2017-38-53.png?raw=true)
 > 3. **Uncheck **any steps that shouldn’t be included in the workflow (if any), and **rename** the workflow to ``NGS Analysis``.
 > 4. Click on the **Create Workflow** button near the top.
 You will get a message that the workflow was created. But where did it go?
@@ -245,17 +258,22 @@ We can examine the workflow in Galaxy’s workflow editor. Here you can view/cha
 > ### :pencil2: Hands-on: Edit workflow
 >
 > 1. Click on the triangle to the right of your workflow name.
+>
 ![](https://github.com/luisaleitao/training-material/blob/master/topics/introduction/images/workflow_edit.png?raw=true)
+>
 > 2. Select **Edit** to launch the workflow editor. You should see something like this:
-![](https://github.com/luisaleitao/training-material/blob/master/topics/introduction/images/example_workflow.png?raw=true)
+>![](https://github.com/luisaleitao/training-material/blob/master/topics/introduction/images/example_workflow.png?raw=true)
+>
 >When you click on a component, you will get a view of all the parameter settings for that tool on the right-hand side of your screen.
 >
 > 3. **Click the asterisk** next to ``output1`` in the ``bam_output(bam)``. Now, when we run the workflow, we will only see the final two outputs, the BAM and the corresponding SAM file. Once you have done this, you will notice that the **minimap** at the bottom-right corner will have orange boxes representing a tool with an output that will be shown.
-![](https://github.com/luisaleitao/training-material/blob/master/topics/introduction/images/101_31.png?raw=true)
+>![](https://github.com/luisaleitao/training-material/blob/master/topics/introduction/images/101_31.png?raw=true)
+>
 >If you didn’t specify a name for the input files at the beginning they will be labeled ``Input Dataset``. 
 > 4. **Save your workflow** (important!) by clicking on the gear icon at the top right of the screen, and selecting Save.
-![](https://galaxyproject.github.io/training-material/topics/introduction/images/workflow_editor_save.png)
-> 5. **Return **to the analysis view by clicking on ``Analyze Data`` at the top menu bar.
+>![](https://galaxyproject.github.io/training-material/topics/introduction/images/workflow_editor_save.png)
+>
+>5. **Return **to the analysis view by clicking on ``Analyze Data`` at the top menu bar.
 {: .hands_on}
 
 > ### :nut_and_bolt: Comment: 
