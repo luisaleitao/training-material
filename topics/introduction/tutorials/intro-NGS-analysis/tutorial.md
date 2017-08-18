@@ -7,7 +7,8 @@ tutorial_name: intro_NGS_analysis
 # Introduction
 {:.no_toc}
 
-In this tutorial you will learn the basics on how to work and analyse next-generation sequencing data. First we will deal with manipulation of fastq files, more precisely how to access the quality of the data and perform some quality treatments, and then we will deal with SAM/BAM files, learning how to map the data and visualize the results.  
+In this tutorial you will learn the basics on how to work and analyse next-generation sequencing data. First we will deal with manipulation of fastq files, more precisely how to access the quality of the data and perform some quality treatments, and then we will deal with SAM/BAM files, learning how to map the data and visualize the results. 
+The data we're using in this tutorial is from [The First Steps of Adaptation of Escherichia coli to the Gut Are Dominated by Soft Sweeps](http://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1004182) study and the genome utilized is from [here](https://www.ncbi.nlm.nih.gov/nuccore/556503834). 
 
 > ### Agenda
 >
@@ -19,7 +20,6 @@ In this tutorial you will learn the basics on how to work and analyse next-gener
 {: .agenda}
 
 # Fastq manipulation 
-{:.no_toc}
 
 Most high-throughput sequencing machines output fastq files, the “de facto” current standard in HTS.
 Fastq files are simply text files, where each block of information (a sequenced DNA fragment) in this
@@ -40,7 +40,7 @@ We have two sequenced DNA fragments (or reads), where each read is represented b
 with sequence and base quality information. Each block of information (4 lines) includes:
 
 - 1.@ followed by read identifier
-- 2.read sequence
+- 2.read sequence 
 - 3.+ separator line
 - 4.quality of each base based on ASCII score
 
@@ -52,12 +52,12 @@ The probability p of error per base is given as a **Phred score**, calculated fr
 Although there's theoretically no limit, Q usually goes up to around 40 in illumina machines.
 
 To obtain this Q value from the character associated to the quality of the base, we have to know that each character (such as '#') has an ASCII decimal value associated (for example, '#' has a value of 35).
-The Q value of a character is the decimal value corresponding to the entry of that character in the ASCII table, subtracted by 33. For example Q('#') = 35 – 33
+The Q value of a character is the decimal value corresponding to the entry of that character in the ASCII table, subtracted by 33. For example Q('#') = 35 – 33 = 2
 
 > ### :pencil2: Hands-on: 
 >
 > 1. *__Interpret the quality of the bases__*: For the fastq file you just saw, analyse some of the bases and obtain their phred score. To do so look at the ASCII table below.
-  ![](http://www.asciitable.com/index/asciifull.gif "source is www.asciitable.com")
+  ![source of the table](http://www.asciitable.com/index/asciifull.gif "source is www.asciitable.com")
   
 > {: .hands_on}
 
@@ -69,9 +69,9 @@ High Throughput Sequencing machines read thousands or millions of sequences in p
 > ### :pencil2: Hands-on: 
 >
 > 1. Create a new project
-> 2. Upload to Galaxy the SRR1030347_1.fastq.interval.fq file provided. source:[1](http://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1004182), [2](https://www.ncbi.nlm.nih.gov/sra/?term=SRR1030347)
+> 2. Upload to Galaxy the SRR1030347_2.fastq.interval.fq file provided.
 
->>    > ### :bulb: Tip: Upload data to Galaxy
+>>    > ### :bulb: Tip: Upload data to Galaxy [[1]](https://galaxyproject.github.io/training-material/topics/introduction/tutorials/galaxy-intro-peaks2genes/tutorial.html) 
 >>    >
 >>    > * Click on the upload button in the upper left of the interface.
 
@@ -89,13 +89,19 @@ High Throughput Sequencing machines read thousands or millions of sequences in p
 ## Trimming and Filtering
 {:.no_toc}
 
-As you may have noticed before, reads tend to lose quality towards their end, where there is a higher
-probability of erroneous bases being called. To avoid problems in subsequent analysis, you should
-remove regions of poor quality in your read, usually by trimming poor quality bases from the end.
+As you may have noticed in the FastQC report you've just seen, the quality of the reads gets worse towards their end, where there is a higher probability of erroneous bases being called. To avoid problems in subsequent analysis, you should remove regions of poor quality in your read, usually by trimming poor quality bases from the end.
 
 > ### :pencil2: Hands-on: Quality treatment
 >
 > 1. **Trim Galore!**:wrench::Run Trim Galore on the previously imported data file.
+>> a) Is the library paired-end or single-end?: **Single end**
+>> b) Reads in FASTQ format: **First Dataset (See the tip below, as you will need to change the type of the data).**
+>> c) Adapter sequence to be trimmed: **Automatic detection**, unless you know which adapter sequences were used
+>> d) Trim Galore! advanced settings: **Full parameter list**
+>> e) Trim low-quality ends from reads: **30**
+>> f) Overlap with adapter sequence required to trim a sequence: **5.** The default value "1" can be too stringent.
+>> g) Discard reads that became shorter than length N: **20**
+>> h) Leave the rest of the settings on default
 >
 >>    > ### :bulb: Tip: Changing the file type `fastq` to `fastqsanger` of data in your history
 >    >
@@ -107,25 +113,6 @@ remove regions of poor quality in your read, usually by trimming poor quality ba
 >    > * Press **Save**.     
 >    {: .tip}
 >    >
->    > ### :question: Questions
->    >
->    > 1. Which parameters must be applied to the trimming tool to follow the previous recommendations?
->    >
->    >    <details>
->    >    <summary>Click to view answers</summary>
->    >    <ol type="1">
->    >    <li> 
->    >
->    >    * If you already know which adapter sequences were used during the library preparation, please use them. Otherwise, use the option for automatic detection and trimming of adapter sequences
->    >
->    >    * Trimming low-quality ends (below 30) from reads in addition to adapter removal. Please set the value to 30.
->    >
->    >    * Option for required number bases overlap with adapter sequence can be tweaked. The default value "1" is too stringent that on average 25% of reads will be trimmed. In order to reduce these falsely trimmed bases, please set it to 5 bases.
->    >
->    >    * Removing reads shorter than 20 bp </li>
->    >    </ol>
->    >    </details>
->    {: .question}
 >
 > 2. **FastQC**:wrench:: Rerun FastQC on the new treated file and compare the results. 
 > {: .hands_on}
@@ -142,7 +129,7 @@ remove regions of poor quality in your read, usually by trimming poor quality ba
 >    {: .question}
 > ### :nut_and_bolt: Comment
 >
-> - If you send your sequencing to an external facility, they usually do these verifications and filtering for you, and you have “clean” sequences in the end, but it is always better to check. If you need to do this processing yourself, there are many small free programs to do this, such as [cutadapt](https://cutadapt.readthedocs.org/en/stable/). You'll also need to know the adaptors that were used in your library preparation (eg. Illumina TruSeq).
+> - If you send your sequencing to an external facility, they usually do these verifications and filtering for you, and you have “clean” sequences in the end, but it is always better to check. If you need to do this processing yourself, you can also use the *Cutadapt* tool in Galaxy, but you'll also need to know the adaptors that were used in your library preparation (eg. Illumina TruSeq).
 > {: .comment}
 
 # Mapping the data
@@ -150,15 +137,19 @@ remove regions of poor quality in your read, usually by trimming poor quality ba
 
 After obtaining millions of short reads, we need to align them to a (sometimes large) reference genome. To achieve this, novel, more efficient, alignment methods had to be developed. One popular method is based on the burrows-wheeler transform and the use of efficient data structures, of which [bwa](http://bio-bwa.sourceforge.net/) and [bowtie](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml) are examples. They enable alignment of millions of reads in a few minutes, even in a laptop.
 
-To store millions of alignments, researchers also had to develop new, more practical formats. The Sequence Alignment/Map (SAM) format is a tabular text file format, where each line contains information for one alignment. SAM files are most often compressed as BAM (Binary sAM) files, to reduce space and allow direct access to alignments in any arbitrary region of the genome. Several tools only work with BAM files.
+To store millions of alignments, researchers also had to develop new, more practical formats. The Sequence Alignment/Map (SAM) format is a tabular text file format, where each line contains information for one alignment. SAM files are most often compressed as BAM (Binary SAM) files, to reduce space and allow direct access to alignments in any arbitrary region of the genome. Several tools only work with BAM files.
 
 > ### :pencil2: Hands-on: Alignment to a reference genome
 >
 > 1. **BWA-MEM**:wrench:: Search in the tool bar on the left the mapper ‘BWA-MEM’. 
-> 2. Select **BWA-MEM** and use the uploaded dataset (First Dataset) as the fastqsanger file
-> 3. Choose as reference genome the E.coli NC_000913.3_MG1655.fasta.([3](https://www.ncbi.nlm.nih.gov/nuccore/556503834))
->    **NOTE**: You may need to upload the file to your history. Please do it as already explained above.
-{: .hands_on}
+>> Settings:
+>> a) Will you select a reference genome from your history or use a built-in index?: **Use a genome from history**
+>> b) Choose as reference genome the ``E.coli NC_000913.3_MG1655.fasta.``[3](https://www.ncbi.nlm.nih.gov/nuccore/556503834)
+>> You may need to upload the file to your history. Please do it as already explained above.
+>> c) Single or Paired-end reads: **Single**
+>> d) Select fastq dataset: **First Dataset**
+>> e) Set read groups information?: **Automatically assign ID**
+>> f) Leave the rest of the settings on default
 
 > ### :nut_and_bolt: Comment: Learning about SAM files 
 >
@@ -166,13 +157,11 @@ To store millions of alignments, researchers also had to develop new, more pract
 has 11 mandatory fields.
 
 > ![](https://galaxyproject.github.io/training-material//topics/usegalaxy/images/bam_structure.png) 
-> To understand more about the information present in SAM files look briefly in [here](https://samtools.github.io/hts-specs/SAMv1.pdf) 
+> Image from [Introduction to differential gene expression analysis using RNA-seq by Friederike Dundar, Luce Skrabanek, Paul Zumbo](http://chagall.med.cornell.edu/RNASEQcourse/Intro2RNAseq.pdf). To understand more about the information present in SAM files look briefly in [here](https://samtools.github.io/hts-specs/SAMv1.pdf) 
 > {: .comment}
-
-> ### :pencil2: Hands-on: Alignment to a reference genome
-
-> 4. **BAM to SAM** :wrench:: Search in the tool bar on the left 'BAM to SAM'
-> 5. Select the BAM file obtained with bwa-mem
+>
+> 2. **BAM to SAM** :wrench:: Search in the tool bar on the left 'BAM to SAM'
+> 3. Select the BAM file obtained with bwa-mem.Click on the eye next to the output file of this tool and inspect briefly the headers and content of the file.
 >
 >    > ### :question: Questions
 >    >
@@ -202,14 +191,17 @@ After finishing your analysis, even if you did all the quality checks, and obtai
 > 2. **IGV**:wrench::Open genome file ``NC_000913.3_MG1655.fasta``
 > 2. **Galaxy**:wrench:: Click on the BWA-MEM item on the history panel .
 > 3. **Galaxy**:wrench:: Choose in the history on the BWA-MEM results and click on ‘local’ at ‘display with IGV’.
+> ![](https://github.com/luisaleitao/training-material/blob/master/topics/introduction/images/display%20with%20IGV.png?raw=true)
 > 4. **IGV**:wrench:: The BAM file should be opened in the IGV browser.
 > 5. **IGV**:wrench:: Look at the following regions:
 >> - NC_000913.3:3846244-3846290 
 >> - NC_000913.3:1-1000 and NC_000913.3:4640500-4641652 
 >> - NC_000913.3:3759212-3768438 
 
->> **NOTE:** Most genomes (particularly mamallian genomes) contain areas of low complexity, composed mostly of repetitive sequences. In the case of short reads, sometimes these align to multiple regions in the genome equally well, making it impossible to know where the fragment came from. Longer reads are needed to overcome these difficulties, or in the absence of these, paired-end data can also be used. **Paired end reads occur when a fragment of DNA is sequenced from two ends and therefore produces two reads.** Some aligners (such as bwa) can use information on paired reads to help disambiguate some alignments. Information on paired reads is also added to the SAM file when proper aligners are used. 
-
+> ### :nut_and_bolt: Comment: 
+Most genomes (particularly mamallian genomes) contain areas of low complexity, composed mostly of repetitive sequences. In the case of short reads, sometimes these align to multiple regions in the genome equally well, making it impossible to know where the fragment came from. Longer reads are needed to overcome these difficulties, or in the absence of these, paired-end data can also be used. **Paired end reads occur when a fragment of DNA is sequenced from two ends and therefore produces two reads.** Some aligners (such as bwa) can use information on paired reads to help disambiguate some alignments. Information on paired reads is also added to the SAM file when proper aligners are used. 
+> {: .comment}
+>
 > ### :question: Questions
 >    >
 >    > 1. Look at the first region. What do you see?
@@ -221,14 +213,53 @@ After finishing your analysis, even if you did all the quality checks, and obtai
 >    >    <li> 
 >    >    1.You can see that this region has an SNP (a C instead of an A in the genome).
 >    >
->    >    2.The coloured reads that you see in this case represent reads in which the insert size is larger than expected. You can see it at the beggining and at the ending of the chromossome. This happens due to the chromossome of the E.coli being circular, therefore when sequencing from both ends of the fragment of DNA, the pair that corresponds to the the one in the beggining of the genome is at the end.
+>    >    2.The coloured reads that you see in this case represent reads in which the insert size is larger than expected. You can see it at the beginning and at the end of the chromossome. This happens due to the chromossome of the E.coli being circular, therefore when sequencing from both ends of the fragment of DNA, the pair that corresponds to the the one at the beginning of the genome is at the end.
 >    >
->    >    3.The reads are white because they have a mapping quality equal to zero. In this case, the read also maps to another location with equally good placement. When you view them as pairs, the program can gather information from a read that is sure in their location and that happens to be the pair for a white read. So, when viewing as pairs IGV uses that information and can be sure now that the white read belongs there or the opposite.</li>
+>    >    3.The reads are white because they have a mapping quality equal to zero or, as happens in this case, the read also maps to another location with equally good placement. When you view them as pairs, the program can gather information from a read that the program is sure in their location and at the same time happens to be the pair for a white read. So, when viewing as pairs, IGV uses that information and, based on the read that he is confident in the location and knowing that it also pairs to a white one, he can be sure now that the white read belongs there.</li>
 >    >    </ol>
 >    >    </details>
 >    {: .question}
  
 > {: .hands_on}
+# Constructing your workflow
 
+As you learnt in [Galaxy 101 tutorial](https://galaxyproject.github.io/training-material/topics/introduction/tutorials/galaxy-intro-101/tutorial.html#convert-your-analysis-history-into-a-workflow) you can create a workflow that runs all the steps at once, saving you a lot of time. We're are also going to create one for this analysis.
+>
+> ### :pencil2: Hands-on: Extract workflow
+>
+> 1. **Clean up** your history. If you had any failed jobs (red), please remove those datasets from your history by clicking on the `x` button. This will make the creation of a workflow easier.
+> 2. Go to the history **Options menu** (gear symbol) and select the ``Extract Workflow`` option.
+![](https://github.com/luisaleitao/training-material/blob/master/topics/introduction/images/history_menu_extract_workflow.png?raw=true)
+>The center pane will change as shown below and you will be able to choose which steps to include/exclude and how to name the newly created workflow.
+![](https://github.com/luisaleitao/training-material/blob/master/topics/introduction/images/Screenshot%20from%202017-08-17%2017-38-53.png?raw=true)
+>
+> 3. **Uncheck **any steps that shouldn’t be included in the workflow (if any), and **rename** the workflow to ``NGS Analysis``.
+> 4. Click on the **Create Workflow** button near the top.
+You will get a message that the workflow was created. But where did it go?
+> 5. Click on **Workflow** in the top menu of Galaxy. Here you have a list of all your workflows. Your newly created workflow should be listed at the top:
+{: .hands_on}
+## The workflow editor
 
+We can examine the workflow in Galaxy’s workflow editor. Here you can view/change the parameter settings of each step, add and remove tools, and connect an output from one tool to the input of another, all in an easy and graphical manner. You can also use this editor to build workflows from scratch.
+
+> ### :pencil2: Hands-on: Edit workflow
+>
+> 1. Click on the triangle to the right of your workflow name.
+![](https://github.com/luisaleitao/training-material/blob/master/topics/introduction/images/workflow_edit.png?raw=true)
+> 2. Select **Edit** to launch the workflow editor. You should see something like this:
+![](https://github.com/luisaleitao/training-material/blob/master/topics/introduction/images/example_workflow.png?raw=true)
+>When you click on a component, you will get a view of all the parameter settings for that tool on the right-hand side of your screen.
+>
+> 3. **Click the asterisk** next to ``output1`` in the ``bam_output(bam)``. Now, when we run the workflow, we will only see the final two outputs, the BAM and the corresponding SAM file. Once you have done this, you will notice that the **minimap** at the bottom-right corner will have orange boxes representing a tool with an output that will be shown.
+![](https://github.com/luisaleitao/training-material/blob/master/topics/introduction/images/101_31.png?raw=true)
+>If you didn’t specify a name for the input files at the beginning they will be labeled ``Input Dataset``. 
+> 4. **Save your workflow** (important!) by clicking on the gear icon at the top right of the screen, and selecting Save.
+![](https://galaxyproject.github.io/training-material/topics/introduction/images/workflow_editor_save.png)
+> 5. **Return **to the analysis view by clicking on ``Analyze Data`` at the top menu bar.
+{: .hands_on}
+
+> ### :nut_and_bolt: Comment: 
+>
+> We could **validate** our newly built workflow by running it on the same input datasets used before in this tutorial to  make sure we do obtain the same results. 
+> {: .comment}
 
